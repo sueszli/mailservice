@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
 
-public class NameserverRemote implements INameserverRemote{
+public class NameserverRemote implements INameserverRemote {
 
     private final ConcurrentMap<String, INameserverRemote> children = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, String> addresses = new ConcurrentHashMap<>();
@@ -29,15 +29,15 @@ public class NameserverRemote implements INameserverRemote{
             logger.println("Registering nameserver for zone '%s'", domain);
             INameserverRemote result = children.computeIfAbsent(domain, e -> nameserver);
 
-            if(result != nameserver) {
+            if (result != nameserver) {
                 logger.println("WARNING: The domain '%s' is already registerd", domain);
                 throw new AlreadyRegisteredException("The domain " + domain + " is already registerd");
             }
         } else {
-            String lookup = split[split.length-1];
+            String lookup = split[split.length - 1];
 
             INameserverRemote child = children.get(lookup);
-            if(child == null)
+            if (child == null)
                 throw new InvalidDomainException("Could not find domain registry in child set" + lookup + " of given domain " + domain);
 
             String subdomain = substractSubdomain(split);
@@ -61,10 +61,10 @@ public class NameserverRemote implements INameserverRemote{
                 throw new AlreadyRegisteredException(String.format("Domain '%s' already registered with address '%s'", domain, result));
             }
         } else {
-            String lookup = split[split.length-1];
+            String lookup = split[split.length - 1];
 
             INameserverRemote child = children.get(lookup);
-            if(child == null)
+            if (child == null)
                 throw new InvalidDomainException("Could not find domain registry in child set '" + lookup + "' of given domain " + domain);
 
             String subdomain = substractSubdomain(split);
@@ -91,12 +91,14 @@ public class NameserverRemote implements INameserverRemote{
         return new HashMap<>(children);
     }
 
-    public Map<String, String> getAddresses() {return new HashMap<>(addresses); }
+    public Map<String, String> getAddresses() {
+        return new HashMap<>(addresses);
+    }
 
 
     private String substractSubdomain(String[] splittedDomain) {
         List<String> subdomain = new LinkedList<>(Arrays.asList(splittedDomain));
-        subdomain.remove(subdomain.size()-1);
+        subdomain.remove(subdomain.size() - 1);
         return String.join(".", subdomain);
     }
 }

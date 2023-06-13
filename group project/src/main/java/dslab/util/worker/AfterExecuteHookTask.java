@@ -1,6 +1,6 @@
 package dslab.util.worker;
 
-public class AfterExecuteHookTask implements Runnable{
+public class AfterExecuteHookTask implements Runnable {
 
     private Runnable task;
     private Hook afterExecuteHook;
@@ -9,7 +9,6 @@ public class AfterExecuteHookTask implements Runnable{
         this.task = task;
         this.afterExecuteHook = afterExecuteHook;
     }
-
 
     @Override
     public void run() {

@@ -41,13 +41,13 @@ public class ProtocolParaserMethodAdapter implements Command {
             throw new RuntimeException(var5);
         } catch (InvocationTargetException var6) {
             if (var6.getCause() instanceof StopShellException) {
-                throw (StopShellException)var6.getCause();
+                throw (StopShellException) var6.getCause();
             } else if (var6.getCause() instanceof ExitException) {
-                throw (ExitException)var6.getCause();
+                throw (ExitException) var6.getCause();
             } else if (var6.getCause() instanceof ValidationException) {
-                throw (ValidationException)var6.getCause();
+                throw (ValidationException) var6.getCause();
             } else if (var6.getCause() instanceof ProtocolParseException) {
-                throw (ProtocolParseException)var6.getCause();
+                throw (ProtocolParseException) var6.getCause();
             } else {
                 throw new CommandExecutionException(var6.getCause());
             }
@@ -60,11 +60,11 @@ public class ProtocolParaserMethodAdapter implements Command {
         int offset = this.method.hasContextParameter() ? 1 : 0;
 
 
-        if(parameters.length == 1 && List.class.isAssignableFrom(parameters[0].getType())) {
-            return new List[] {input.getArguments()};
+        if (parameters.length == 1 && List.class.isAssignableFrom(parameters[0].getType())) {
+            return new List[]{input.getArguments()};
         }
 
-        for(int i = 0; i < input.argc(); ++i) {
+        for (int i = 0; i < input.argc(); ++i) {
             Parameter parameter = parameters[i + offset];
             Class<?> type = parameter.getType();
             String inputValue = input.getArguments().get(i);
@@ -87,7 +87,7 @@ public class ProtocolParaserMethodAdapter implements Command {
 
         Parameter[] parameters = this.method.getParameters();
 
-        if(parameters.length == 1 && List.class.isAssignableFrom(parameters[0].getType())) return;
+        if (parameters.length == 1 && List.class.isAssignableFrom(parameters[0].getType())) return;
 
         int expected = parameters.length - (this.method.hasContextParameter() ? 1 : 0);
         if (expected != input.argc()) {

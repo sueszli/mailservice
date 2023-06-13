@@ -36,9 +36,9 @@ public class Nameserver implements INameserver {
      * Creates a new server instance.
      *
      * @param componentId the id of the component that corresponds to the Config resource
-     * @param config the component config
-     * @param in the input stream to read console input from
-     * @param out the output stream to write console output to
+     * @param config      the component config
+     * @param in          the input stream to read console input from
+     * @param out         the output stream to write console output to
      */
     public Nameserver(String componentId, Config config, InputStream in, PrintStream out) {
         // TODO
@@ -62,7 +62,8 @@ public class Nameserver implements INameserver {
         } catch (AlreadyBoundException e) {//TODO: meaningful exception handling
             close();
             throw new RuntimeException("[ERROR] coudl not create remote object: " + e.getMessage(), e);
-        } catch (RemoteException|AlreadyRegisteredException|InvalidDomainException|NotBoundException  e) { //TODO: meaningful exception handling
+        } catch (RemoteException | AlreadyRegisteredException | InvalidDomainException |
+                 NotBoundException e) { //TODO: meaningful exception handling
             close();
             throw new RuntimeException("[ERROR] Could not start rootserver: " + e.getMessage(), e);
         }
@@ -139,9 +140,7 @@ public class Nameserver implements INameserver {
 
     private void runZone() throws RemoteException, NotBoundException, AlreadyRegisteredException, InvalidDomainException {
         nsRemote = (INameserverRemote) UnicastRemoteObject.exportObject(nsObj, 0);
-        Registry registry = LocateRegistry.getRegistry(
-                config.getString("registry.host"),
-                config.getInt("registry.port"));
+        Registry registry = LocateRegistry.getRegistry(config.getString("registry.host"), config.getInt("registry.port"));
 
         INameserverRemote root = (INameserverRemote) registry.lookup(config.getString("root_id"));
         root.registerNameserver(config.getString("domain"), nsRemote);

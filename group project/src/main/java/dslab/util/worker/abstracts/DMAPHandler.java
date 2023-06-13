@@ -21,7 +21,7 @@ public abstract class DMAPHandler implements IDMAPHandler {
 
     @Override
     public String login(String username, String password) throws ValidationException {
-        if(loggedInUser != null) throw new ValidationException("logout first");
+        if (loggedInUser != null) throw new ValidationException("logout first");
 
         String pass;
         try {
@@ -30,7 +30,7 @@ public abstract class DMAPHandler implements IDMAPHandler {
             throw new ValidationException("unknown username");
         }
 
-        if(!pass.equals(password)) throw new ValidationException("wrong password");
+        if (!pass.equals(password)) throw new ValidationException("wrong password");
 
         this.loggedInUser = username;
 
@@ -40,10 +40,7 @@ public abstract class DMAPHandler implements IDMAPHandler {
     @Override
     public String list() throws ValidationException {
         validateLoggedIn();
-        return repo.getAllEmailsBy(loggedInUser)
-                .stream()
-                .map(e -> String.format("%d %s %s", e.getId(), e.getFrom(), e.getSubject()))
-                .collect(Collectors.joining("\n"));
+        return repo.getAllEmailsBy(loggedInUser).stream().map(e -> String.format("%d %s %s", e.getId(), e.getFrom(), e.getSubject())).collect(Collectors.joining("\n"));
     }
 
     @Override
@@ -51,18 +48,9 @@ public abstract class DMAPHandler implements IDMAPHandler {
         validateLoggedIn();
 
         StoredEmail email = repo.getByIdAndUser(emailId.longValue(), loggedInUser);
-        if(email == null) throw new ValidationException("unknown message id");
+        if (email == null) throw new ValidationException("unknown message id");
 
-        return String.format(
-                "from %s \n" +
-                        "to %s \n" +
-                        "subject %s \n" +
-                        "data %s",
-                email.getFrom(),
-                String.join(",", email.getRecipients()),
-                email.getSubject(),
-                email.getData()
-        );
+        return String.format("from %s \n" + "to %s \n" + "subject %s \n" + "data %s", email.getFrom(), String.join(",", email.getRecipients()), email.getSubject(), email.getData());
     }
 
     @Override
@@ -79,6 +67,6 @@ public abstract class DMAPHandler implements IDMAPHandler {
     }
 
     private void validateLoggedIn() {
-        if(loggedInUser == null) throw new ValidationException("not logged in");
+        if (loggedInUser == null) throw new ValidationException("not logged in");
     }
 }

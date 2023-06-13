@@ -10,8 +10,6 @@ import java.util.List;
 
 public abstract class DMTPWorker extends TCPWorker implements DMTPListener {
 
-
-
     private final IDMTPHandler dmtpHandler;
 
     public DMTPWorker(Socket clientSocket, IDMTPHandler dmtpHandler) {
@@ -23,8 +21,6 @@ public abstract class DMTPWorker extends TCPWorker implements DMTPListener {
         super(clientSocket, initMessage);
         this.dmtpHandler = dmtpHandler;
     }
-
-
 
     @Override
     @Command

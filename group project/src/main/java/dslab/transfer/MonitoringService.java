@@ -20,10 +20,7 @@ public class MonitoringService {
 
             byte[] buffer = data.getBytes();
 
-            InetSocketAddress address = new InetSocketAddress(
-                    monitoringHost,
-                    monitoringPort
-            );
+            InetSocketAddress address = new InetSocketAddress(monitoringHost, monitoringPort);
 
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address);
 

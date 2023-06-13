@@ -36,16 +36,13 @@ public class SockCom implements ISockComm {
         }
 
         String decoded = inputTransformer.transform(input);
-        if(decoded.startsWith("error "))
-            throw new ErrorResponseException(decoded.trim());
+        if (decoded.startsWith("error ")) throw new ErrorResponseException(decoded.trim());
         return decoded;
     }
 
     @Override
     public void writeLine(Object data) {
-        out.println(
-                outputTransformer.transform(data.toString())
-        );
+        out.println(outputTransformer.transform(data.toString()));
     }
 
     @Override

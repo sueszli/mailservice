@@ -50,7 +50,7 @@ public class ProtocolParser implements IProtocolParser {
 
         Command command = getCommand(input);
 
-        if(command == null) {
+        if (command == null) {
             printErr("protocol error");
             registerObj.errorQuit();
             return;
@@ -72,7 +72,7 @@ public class ProtocolParser implements IProtocolParser {
 
         Map<String, Command> commands = new HashMap<>(commandMethods.size());
 
-        for(CommandMethod m : commandMethods) {
+        for (CommandMethod m : commandMethods) {
             ProtocolParaserMethodAdapter command = new ProtocolParaserMethodAdapter(m, registerObj);
 
             commands.put(m.getName(), command);

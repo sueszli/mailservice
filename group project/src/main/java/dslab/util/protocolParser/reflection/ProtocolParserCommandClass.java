@@ -25,19 +25,17 @@ public class ProtocolParserCommandClass extends CommandClass {
     }
 
     private void initMethods(Class<?> clazz) {
-        if(clazz == null || clazz == Objects.class)
-            return;
+        if (clazz == null || clazz == Objects.class) return;
 
         Method[] methods = clazz.getDeclaredMethods();
 
-        for(Method m : methods) {
-            if(m.isAnnotationPresent(Command.class)) {
+        for (Method m : methods) {
+            if (m.isAnnotationPresent(Command.class)) {
                 CommandMethod commandMethod = new CommandMethod(m);
-                if(commandMethods.stream().noneMatch(c -> c.getMethod().getName().equals(m.getName())))
+                if (commandMethods.stream().noneMatch(c -> c.getMethod().getName().equals(m.getName())))
                     commandMethods.add(commandMethod);
             }
         }
-
 
 
         initMethods(clazz.getSuperclass());

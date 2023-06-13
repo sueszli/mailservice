@@ -31,7 +31,7 @@ public class PackageListener extends Thread {
             try {
                 socket.receive(packet);
             } catch (SocketException e) {
-                if(shutdown) break;
+                if (shutdown) break;
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -49,9 +49,9 @@ public class PackageListener extends Thread {
         data = data.trim();
         String regularExpr = "^([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}):([0-9]{1,5})\\s([a-zA-Z0-9_!#$%&'*+=?`{|}~^.-]+@[a-zA-Z0-9.-]+)$";
 
-        if(!data.matches(regularExpr)) return;
+        if (!data.matches(regularExpr)) return;
         String[] serverAddress = data.split("\\s");
-        if(serverAddress.length != 2) return;
+        if (serverAddress.length != 2) return;
 
         repo.insertServer(serverAddress[0]);
         repo.insertAddress(serverAddress[1]);

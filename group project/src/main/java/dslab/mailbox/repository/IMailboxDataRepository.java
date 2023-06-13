@@ -16,5 +16,5 @@ public interface IMailboxDataRepository {
     List<StoredEmail> getAllEmailsBy(String username);
 
     StoredEmail getByIdAndUser(Long id, String username);
-    
+
 }

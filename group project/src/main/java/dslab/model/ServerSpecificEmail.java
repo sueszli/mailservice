@@ -32,9 +32,6 @@ public class ServerSpecificEmail extends Email {
 
     @Override
     public String toString() {
-        return "ServerSpecificEmail{" +
-            "mailboxIp='" + mailboxIp + '\'' +
-            ", mailboxPort=" + mailboxPort +
-            "} " + super.toString();
+        return "ServerSpecificEmail{" + "mailboxIp='" + mailboxIp + '\'' + ", mailboxPort=" + mailboxPort + "} " + super.toString();
     }
 }

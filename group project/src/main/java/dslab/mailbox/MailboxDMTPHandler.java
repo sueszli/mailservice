@@ -32,22 +32,14 @@ public class MailboxDMTPHandler extends DMTPHandler {
     public String to(String to) throws ValidationException {
         String domain = config.getString("domain");
 
-        List<String> emails = Stream.of(to.split(","))
-                .filter(e -> !Email.invalidAddress(e))
-                .filter(s -> s.split("@")[1].equals(domain))
-                .collect(Collectors.toList());
-        List<String> usernames = emails.stream()
-                .map(r -> r.trim().split("@")[0])
-                .collect(Collectors.toList());
+        List<String> emails = Stream.of(to.split(",")).filter(e -> !Email.invalidAddress(e)).filter(s -> s.split("@")[1].equals(domain)).collect(Collectors.toList());
+        List<String> usernames = emails.stream().map(r -> r.trim().split("@")[0]).collect(Collectors.toList());
 
         List<String> storedUsers = dataRepository.getAllUsers();
 
-        List<String> notStoredUsers = usernames.stream()
-                .filter(u -> storedUsers.stream()
-                        .noneMatch(su -> su.equals(u))
-                ).collect(Collectors.toList());
+        List<String> notStoredUsers = usernames.stream().filter(u -> storedUsers.stream().noneMatch(su -> su.equals(u))).collect(Collectors.toList());
 
-        if(!notStoredUsers.isEmpty())
+        if (!notStoredUsers.isEmpty())
             throw new ValidationException("unknown recipient " + String.join(",", notStoredUsers));
 
         getEmail().setRecipients(emails);

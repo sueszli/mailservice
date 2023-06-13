@@ -28,6 +28,7 @@ public class TransferDMTPWorkerFactory implements ITCPWorkerFactory {
     @Override
     public Worker newWorker(Socket socket) {
         IDMTP2Handler dmtpHandler = new TransferDMTP2Handler(forwardService, inetAddress, rootNs);
-        return new DMTP2Worker(socket, dmtpHandler) {};
+        return new DMTP2Worker(socket, dmtpHandler) {
+        };
     }
 }

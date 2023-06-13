@@ -35,7 +35,7 @@ public class TransferDMTPHandler extends DMTPHandler {
         // send error of domain lookup failures
         ServerSpecificEmail lookUpFailures = transferSenderPreparation.getDomainLookUpFailure();
 
-        if(lookUpFailures != null) forwardService.forward(lookUpFailures);
+        if (lookUpFailures != null) forwardService.forward(lookUpFailures);
 
         return "ok";
     }

@@ -21,7 +21,9 @@ public class Email {
     private List<String> recipients;
     private String hash;
 
-    public Email(){}
+    public Email() {
+    }
+
     public Email(Email config) {
         subject = config.subject;
         data = config.data;
@@ -51,8 +53,7 @@ public class Email {
     }
 
     public void setFrom(String from) throws ValidationException {
-        if(invalidAddress(from))
-            throw new ValidationException("invalid email");
+        if (invalidAddress(from)) throw new ValidationException("invalid email");
 
         this.from = from;
     }
@@ -62,9 +63,8 @@ public class Email {
     }
 
     public void setRecipients(List<String> recipients) throws ValidationException {
-        for(String rec : recipients) {
-            if(invalidAddress(rec))
-                throw new ValidationException("inclues invalid email");
+        for (String rec : recipients) {
+            if (invalidAddress(rec)) throw new ValidationException("inclues invalid email");
         }
 
         this.recipients = recipients;
@@ -79,13 +79,13 @@ public class Email {
     }
 
     public void valid() throws ValidationException {
-        if(subject == null || subject.isBlank()) throw new ValidationException("no subject");
-        if(data == null || data.isBlank()) throw new ValidationException("no data");
-        if(from == null) throw new ValidationException("no from address");
-        if(invalidAddress(from)) throw new ValidationException("invalid from address ");
-        if(recipients == null || recipients.isEmpty()) throw new ValidationException("no recipients");
-        for(String r : recipients)
-            if(invalidAddress(r)) throw new ValidationException("includes invalid recipients address");
+        if (subject == null || subject.isBlank()) throw new ValidationException("no subject");
+        if (data == null || data.isBlank()) throw new ValidationException("no data");
+        if (from == null) throw new ValidationException("no from address");
+        if (invalidAddress(from)) throw new ValidationException("invalid from address ");
+        if (recipients == null || recipients.isEmpty()) throw new ValidationException("no recipients");
+        for (String r : recipients)
+            if (invalidAddress(r)) throw new ValidationException("includes invalid recipients address");
     }
 
     public static String calculateEmailHash(Email email, SecretKeySpec sharedSecret) {
@@ -109,12 +109,6 @@ public class Email {
 
     @Override
     public String toString() {
-        return "Email{" +
-            "subject='" + subject + '\'' +
-            ", data='" + data + '\'' +
-            ", from='" + from + '\'' +
-            ", recipients=" + recipients +
-            ", hash=" + hash +
-            '}';
+        return "Email{" + "subject='" + subject + '\'' + ", data='" + data + '\'' + ", from='" + from + '\'' + ", recipients=" + recipients + ", hash=" + hash + '}';
     }
 }

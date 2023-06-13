@@ -42,7 +42,10 @@ public class MailboxDMAP2Worker extends DMAPWorker implements DMAPListener, IDMA
             comm.writeLine("ok " + componentId);
             String encryptedChallenge = comm.readLine();
 
-            if (encryptedChallenge == null) { errorQuit(); return; }
+            if (encryptedChallenge == null) {
+                errorQuit();
+                return;
+            }
             String encryptedResponse = processChallenge(encryptedChallenge);
             comm.writeLine(encryptedResponse);
 

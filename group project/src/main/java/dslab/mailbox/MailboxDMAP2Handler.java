@@ -23,8 +23,6 @@ public class MailboxDMAP2Handler extends MailboxDMAPHandler implements IDMAPHand
         String baseResult = super.show(emailId);
         StoredEmail email = repo.getByIdAndUser(emailId.longValue(), loggedInUser);
         String hash = email.getHash() == null ? "" : email.getHash();
-        return baseResult
-                + "\nhash " + hash
-                + "\nok";
+        return baseResult + "\nhash " + hash + "\nok";
     }
 }

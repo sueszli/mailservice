@@ -21,6 +21,7 @@ public class MailboxDMTPWorkerFactory implements ITCPWorkerFactory {
     @Override
     public Worker newWorker(Socket socket) {
         IDMTP2Handler dmtp2Handler = new MailboxDMTP2Handler(config, repo);
-        return new DMTP2Worker(socket, dmtp2Handler) {};
+        return new DMTP2Worker(socket, dmtp2Handler) {
+        };
     }
 }

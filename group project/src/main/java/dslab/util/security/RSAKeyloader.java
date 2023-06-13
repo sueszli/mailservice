@@ -31,14 +31,15 @@ public class RSAKeyloader {
 
     /**
      * Loads a key from file.
-     *
+     * <p>
      * The basepath to the keys directory as well as the specific paths to the public and private key
      * directories can be set. By default it is assumed they're located in 'keys/client' and 'keys/server'
      * where keys is the base directory and client/server is the key type specific directory.
+     *
      * @param identifier The name of the .der-file the key is located in.
-     * @param type The type of key. (Either private or public).
+     * @param type       The type of key. (Either private or public).
      * @return The loaded generic key. Must normally be cast to either PrivateKey or PublicKey.
-     * @throws IOException Thrown when there is an error while trying to open the file.
+     * @throws IOException             Thrown when there is an error while trying to open the file.
      * @throws InvalidKeySpecException Thrown when the file contains invalid key specification.
      */
     public Key loadKey(String identifier, KeyType type) throws IOException, InvalidKeySpecException {

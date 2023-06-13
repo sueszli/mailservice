@@ -24,7 +24,6 @@ public abstract class TCPWorker extends Worker {
         this.initMessage = initMessage;
         establishCommunication();
         this.handler = new ProtocolParser(this, comm.out());
-
     }
 
     @Override
@@ -44,8 +43,7 @@ public abstract class TCPWorker extends Worker {
         }
 
 
-        if (input == null)
-            throw new ExecutionStopException("Client connection closed."); // TODO: check this statement
+        if (input == null) throw new ExecutionStopException("Client connection closed."); // TODO: check this statement
 
         input = inputTransform.transform(input);
 
@@ -62,12 +60,11 @@ public abstract class TCPWorker extends Worker {
     }
 
     protected void closeConnection() {
-        if(!clientSocket.isClosed())
-            try {
-                clientSocket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (!clientSocket.isClosed()) try {
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void establishCommunication() {

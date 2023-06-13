@@ -1,4 +1,4 @@
 package dslab.exception;
 
-public class NoOkResponseException extends Exception{
+public class NoOkResponseException extends Exception {
 }

@@ -4,6 +4,4 @@ public interface IProtocolParser {
 
     void interpretRequest(String req);
 
-
-
 }

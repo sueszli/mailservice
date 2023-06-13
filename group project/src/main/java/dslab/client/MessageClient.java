@@ -51,9 +51,9 @@ public class MessageClient implements IMessageClient {
      * Creates a new client instance.
      *
      * @param componentId the id of the component that corresponds to the Config resource
-     * @param config the component config
-     * @param in the input stream to read console input from
-     * @param out the output stream to write console output to
+     * @param config      the component config
+     * @param in          the input stream to read console input from
+     * @param out         the output stream to write console output to
      */
     public MessageClient(String componentId, Config config, InputStream in, PrintStream out) throws IOException {
         this.componentId = componentId;
@@ -77,13 +77,11 @@ public class MessageClient implements IMessageClient {
         }
 
         while (!quit) {
-            if(mailSockCom == null || mailboxSock.isClosed())
-                startup();
+            if (mailSockCom == null || mailboxSock.isClosed()) startup();
 
             shell.run();
 
-            if(!quit)
-                out.println("Connection to mailbox lost. Reconnecting...");
+            if (!quit) out.println("Connection to mailbox lost. Reconnecting...");
         }
     }
 
@@ -106,13 +104,11 @@ public class MessageClient implements IMessageClient {
         try {
             String res = mailSockCom.writeAndReadLine("startsecure");
 
-            if(res == null)
-                errorQuit("startsecure response was null");
+            if (res == null) errorQuit("startsecure response was null");
 
             String[] okRes = res.split("\\s+");
 
-            if(okRes.length != 2 && !okRes[0].equals("ok"))
-                errorQuit("Could not establish secure connection");
+            if (okRes.length != 2 && !okRes[0].equals("ok")) errorQuit("Could not establish secure connection");
 
             RSAKeyloader keyloader = new RSAKeyloader();
             ICryptoService rsaCryptoService = new RSACryptoService();
@@ -134,28 +130,19 @@ public class MessageClient implements IMessageClient {
             IvParameterSpec ivSpec = new IvParameterSpec(iv);
 
             String b64ClientCh = Base64.getEncoder().encodeToString(clientChallange);
-            String challenge = String.format("ok %s %s %s",
-                    b64ClientCh,
-                    Base64.getEncoder().encodeToString(secretKey.getEncoded()),
-                    Base64.getEncoder().encodeToString(iv)
-            );
-            mailSockCom.writeLine(
-                    rsaCryptoService.encrypt(challenge, serverPub)
-            );
+            String challenge = String.format("ok %s %s %s", b64ClientCh, Base64.getEncoder().encodeToString(secretKey.getEncoded()), Base64.getEncoder().encodeToString(iv));
+            mailSockCom.writeLine(rsaCryptoService.encrypt(challenge, serverPub));
 
             cryptoService = new AESCryptoService(secretKey, ivSpec);
 
             // ok <client-challenge>
             String challengeCheck = mailSockCom.readLine();
             challengeCheck = cryptoService.decrypt(challengeCheck);
-            if(challengeCheck == null)
-                errorQuit("Could not decrypt client-challenge response");
+            if (challengeCheck == null) errorQuit("Could not decrypt client-challenge response");
             String[] checkParts = challengeCheck.split("\\s+");
-            if(checkParts.length != 2 || !checkParts[0].equals("ok"))
-                errorQuit("Challenge response was not ok");
+            if (checkParts.length != 2 || !checkParts[0].equals("ok")) errorQuit("Challenge response was not ok");
 
-            if(!checkParts[1].equals(b64ClientCh))
-                errorQuit("Challenge response includes wrong client challenge");
+            if (!checkParts[1].equals(b64ClientCh)) errorQuit("Challenge response includes wrong client challenge");
 
             // finalize
             mailSockCom.writeLine("ok");
@@ -163,7 +150,7 @@ public class MessageClient implements IMessageClient {
             mailSockCom.setInputTransformer(cryptoService::decrypt);
             mailSockCom.setOutputTransformer(cryptoService::encrypt);
 
-        } catch (IOException | InvalidKeySpecException | NoSuchAlgorithmException e ) {
+        } catch (IOException | InvalidKeySpecException | NoSuchAlgorithmException e) {
             errorQuit("Error while establishing secure connection: " + e.getMessage());
         } catch (ErrorResponseException e) {
             errorQuit("error response while establishing connection: " + e.getMessage());
@@ -171,14 +158,10 @@ public class MessageClient implements IMessageClient {
     }
 
     private void login() {
-        String command = String.format("login %s %s",
-                config.getString("mailbox.user"),
-                config.getString("mailbox.password")
-                );
+        String command = String.format("login %s %s", config.getString("mailbox.user"), config.getString("mailbox.password"));
         try {
             String res = mailSockCom.writeAndReadLine(command);
-            if (!res.startsWith("ok"))
-                errorQuit("Could not login because: " + res);
+            if (!res.startsWith("ok")) errorQuit("Could not login because: " + res);
         } catch (IOException e) {
             errorQuit("Could not readline");
         } catch (ErrorResponseException e) {
@@ -192,17 +175,14 @@ public class MessageClient implements IMessageClient {
     public void inbox() {
 
         try {
-            String res = mailSockCom.writeAndReadLine("list");;
+            String res = mailSockCom.writeAndReadLine("list");
+            ;
             if (!res.endsWith("\nok")) {
                 out.println("Inbox could not get loaded");
                 return;
             }
 
-            List<String> ids = Arrays.stream(res.split("\n"))
-                    .map(e -> e.split("\\s+")[0])
-                    .filter(s -> !s.isBlank())
-                    .filter(s -> !s.startsWith("ok"))
-                    .collect(Collectors.toList());
+            List<String> ids = Arrays.stream(res.split("\n")).map(e -> e.split("\\s+")[0]).filter(s -> !s.isBlank()).filter(s -> !s.startsWith("ok")).collect(Collectors.toList());
 
             List<InboxEmail> inbox = new ArrayList<>();
             for (String id : ids) {
@@ -235,7 +215,7 @@ public class MessageClient implements IMessageClient {
 
         InboxEmail email = new InboxEmail();
 
-        for(String line : lines) {
+        for (String line : lines) {
             line = line.trim();
             String field = line.split(" ")[0];
             int contentIndex = field.length() + 1;
@@ -270,13 +250,7 @@ public class MessageClient implements IMessageClient {
     }
 
     private void print(InboxEmail email) {
-        String res = "\n" +
-                "ID: " + email.getId() + "\n" +
-                "From: " + email.getFrom() + "\n" +
-                "To: " + String.join(", ", email.getRecipients()) + "\n" +
-                "Subject: " + email.getSubject() + "\n\n" +
-                email.getData() + "\n\n" +
-                "================";
+        String res = "\n" + "ID: " + email.getId() + "\n" + "From: " + email.getFrom() + "\n" + "To: " + String.join(", ", email.getRecipients()) + "\n" + "Subject: " + email.getSubject() + "\n\n" + email.getData() + "\n\n" + "================";
         out.println(res);
     }
 
@@ -305,8 +279,7 @@ public class MessageClient implements IMessageClient {
 
             if (actualHash == null || !actualHash.equals(email.getHash()))
                 out.println("error email integrity not given");
-            else
-                out.println("ok");
+            else out.println("ok");
 
         } catch (ErrorResponseException e) {
             print(e);
@@ -353,11 +326,12 @@ public class MessageClient implements IMessageClient {
         try {
             com.writeLine("quit");
             socket.close();
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
     }
 
     private void checkRes(String expected, String actual, BinaryBoolOperator<String> op, String errorMsg) throws ValidationException {
-        if(!op.op(actual, expected))
+        if (!op.op(actual, expected))
             throw new ValidationException(errorMsg + ": got '" + actual + "' but expected '" + expected + "'");
     }
 
@@ -367,16 +341,17 @@ public class MessageClient implements IMessageClient {
         quit = true;
         try {
             mailboxSock.close();
-        } catch (IOException ignore) {}
+        } catch (IOException ignore) {
+        }
 
         throw new StopShellException();
     }
 
     private void errorQuit(String reason) {
         try {
-            if(!mailboxSock.isClosed())
-                mailboxSock.close();
-        } catch (IOException ignored) {}
+            if (!mailboxSock.isClosed()) mailboxSock.close();
+        } catch (IOException ignored) {
+        }
 
         throw new RuntimeException(reason);
     }

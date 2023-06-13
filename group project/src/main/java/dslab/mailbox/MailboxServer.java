@@ -59,9 +59,9 @@ public class MailboxServer implements IMailboxServer, Runnable {
      * Creates a new server instance.
      *
      * @param componentId the id of the component that corresponds to the Config resource
-     * @param config the component config
-     * @param in the input stream to read console input from
-     * @param out the output stream to write console output to
+     * @param config      the component config
+     * @param in          the input stream to read console input from
+     * @param out         the output stream to write console output to
      */
     public MailboxServer(String componentId, Config config, InputStream in, PrintStream out) {
         this.componentId = componentId;
@@ -105,10 +105,11 @@ public class MailboxServer implements IMailboxServer, Runnable {
         dmtpLoop.start();
 
         shell.run();
-        if(!shutdown) {
+        if (!shutdown) {
             try {
                 shutdown();
-            } catch (StopShellException ignored) {}
+            } catch (StopShellException ignored) {
+            }
         }
         // interrupt thread to avoid deadlock
         dmapLoop.interrupt();
@@ -154,10 +155,7 @@ public class MailboxServer implements IMailboxServer, Runnable {
     }
 
     private void registerMailboxOnNameserver() throws NotBoundException, RemoteException, AlreadyRegisteredException, InvalidDomainException {
-        Registry registry = LocateRegistry.getRegistry(
-                config.getString("registry.host"),
-                config.getInt("registry.port")
-        );
+        Registry registry = LocateRegistry.getRegistry(config.getString("registry.host"), config.getInt("registry.port"));
 
         INameserverRemote nameserver = (INameserverRemote) registry.lookup(config.getString("root_id"));
         String address = dmtpServerSocket.getInetAddress().getHostAddress() + ":" + dmtpServerSocket.getLocalPort();
@@ -166,11 +164,9 @@ public class MailboxServer implements IMailboxServer, Runnable {
 
     public void closeServer() {
         try {
-            if(this.dmapServerSocket != null)
-                this.dmapServerSocket.close();
+            if (this.dmapServerSocket != null) this.dmapServerSocket.close();
 
-            if(this.dmtpServerSocket != null)
-                this.dmtpServerSocket.close();
+            if (this.dmtpServerSocket != null) this.dmtpServerSocket.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -182,24 +178,13 @@ public class MailboxServer implements IMailboxServer, Runnable {
     @Command
     public void dmtpStatus() {
         ThreadPoolExecutor executor = (ThreadPoolExecutor) dmtpConnectionPool;
-        System.out.println("------\n" +
-            "Threadpool for DMTP requests \n" +
-            "MaxPoolsize:" + executor.getMaximumPoolSize() + "\n" +
-            "Threads: " + executor.getActiveCount() + " \n" +
-            "Queue: " + executor.getQueue().size() + " \n" +
-            "PoolSize " + executor.getPoolSize() + " \n" +
-            "-----");
+        System.out.println("------\n" + "Threadpool for DMTP requests \n" + "MaxPoolsize:" + executor.getMaximumPoolSize() + "\n" + "Threads: " + executor.getActiveCount() + " \n" + "Queue: " + executor.getQueue().size() + " \n" + "PoolSize " + executor.getPoolSize() + " \n" + "-----");
     }
 
     @Command
     public void dmapStatus() {
         ThreadPoolExecutor executor = (ThreadPoolExecutor) dmapConnectionPool;
-        System.out.println("------\n" +
-            "Threadpool for DMAP requests \n" +
-            "Threads: " + executor.getActiveCount() + " \n" +
-            "Queue: " + executor.getQueue().size() + " \n" +
-            "PoolSize " + executor.getPoolSize() + " \n" +
-            "-----");
+        System.out.println("------\n" + "Threadpool for DMAP requests \n" + "Threads: " + executor.getActiveCount() + " \n" + "Queue: " + executor.getQueue().size() + " \n" + "PoolSize " + executor.getPoolSize() + " \n" + "-----");
     }
 
     @Command
@@ -213,7 +198,7 @@ public class MailboxServer implements IMailboxServer, Runnable {
             while (!shutdown) {
                 Socket newConn;
                 try {
-                    if(type == ProtocolType.DMAP) {
+                    if (type == ProtocolType.DMAP) {
                         newConn = this.dmapServerSocket.accept();
                         workerManager.addWorker(newConn, dmapFactory, dmapConnectionPool);
                     } else {
@@ -221,7 +206,7 @@ public class MailboxServer implements IMailboxServer, Runnable {
                         workerManager.addWorker(newConn, dmtpFactory, dmtpConnectionPool);
                     }
                 } catch (IOException e) {
-                    if(shutdown) {
+                    if (shutdown) {
                         continue;
                     }
 

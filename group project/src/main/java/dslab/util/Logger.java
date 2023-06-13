@@ -18,5 +18,4 @@ public class Logger {
         String time = LocalTime.now().truncatedTo(ChronoUnit.SECONDS).toString();
         out.printf(time + " : " + format + " \n", args);
     }
-
 }

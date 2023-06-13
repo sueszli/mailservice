@@ -25,6 +25,7 @@ public class TransferSenderPreparation {
     public ServerSpecificEmail getDomainLookUpFailure() {
         return domainLookUpFailure;
     }
+
     public List<ServerSpecificEmail> getToSend() {
         return toSend;
     }
@@ -43,7 +44,7 @@ public class TransferSenderPreparation {
 
             String[] ipPort;
             try {
-                if(!emailsToSend.containsKey(domain)) {
+                if (!emailsToSend.containsKey(domain)) {
                     ipPort = getDomainAddress(domain, ns);
                     emailsToSend.put(domain, new ServerSpecificEmail(email, ipPort[0], Integer.parseInt(ipPort[1])));
                 }
@@ -51,9 +52,9 @@ public class TransferSenderPreparation {
                 emailsToSend.get(domain).getRecipients().add(r);
 
             } catch (DomainLookUpException e) {
-                if(ignoreFailures) continue;
+                if (ignoreFailures) continue;
 
-                if(domainLookUpFailure == null ) {
+                if (domainLookUpFailure == null) {
                     try {
                         domainLookUpFailure = createEmailDeliveryFailure(email.getFrom(), "error domain unknown for ", ip, ns);
                         domainLookUpFailure.setFailureMail(true);
@@ -63,11 +64,11 @@ public class TransferSenderPreparation {
                     }
                 }
 
-                domainLookUpFailure.setData(domainLookUpFailure.getData() + r +  ",");
+                domainLookUpFailure.setData(domainLookUpFailure.getData() + r + ",");
             }
         }
 
-        for(Map.Entry<String, ServerSpecificEmail> entry : emailsToSend.entrySet()) {
+        for (Map.Entry<String, ServerSpecificEmail> entry : emailsToSend.entrySet()) {
             toSend.add(entry.getValue());
         }
     }
@@ -82,7 +83,8 @@ public class TransferSenderPreparation {
         try {
             failureEmail.setFrom("mailer@" + ip);
             failureEmail.setRecipients(new ArrayList<String>(Collections.singleton(receiver)));
-        } catch (ValidationException ignored) {}
+        } catch (ValidationException ignored) {
+        }
         int port = Integer.parseInt(ipPortFailure[1]);
         ServerSpecificEmail mail = new ServerSpecificEmail(failureEmail, ipPortFailure[0], port);
         mail.setFailureMail(true);
@@ -101,12 +103,10 @@ public class TransferSenderPreparation {
             INameserverRemote next = rootNs;
             for (int i = domainSplit.length - 1; i > 0; --i) {
                 next = next.getNameserver(domainSplit[i]);
-                if (next == null)
-                    throw new DomainLookUpException();
+                if (next == null) throw new DomainLookUpException();
             }
             String address = next.lookup(domainSplit[0]);
-            if (address == null)
-                throw new DomainLookUpException();
+            if (address == null) throw new DomainLookUpException();
 
             return address.split(":");
         } catch (RemoteException e) {

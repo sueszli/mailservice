@@ -10,7 +10,8 @@ public class MonitoringRepository {
     private final ConcurrentMap<String, AtomicLong> addresses = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, AtomicLong> servers = new ConcurrentHashMap<>();
 
-    public MonitoringRepository() {}
+    public MonitoringRepository() {
+    }
 
     public void insertAddress(String address) {
         addresses.putIfAbsent(address, new AtomicLong(0));
@@ -31,15 +32,11 @@ public class MonitoringRepository {
     }
 
 
-
     private String getFormattedString(ConcurrentMap<String, AtomicLong> map) {
         StringBuilder result = new StringBuilder();
-        for(Map.Entry<String, AtomicLong> e : map.entrySet()) {
+        for (Map.Entry<String, AtomicLong> e : map.entrySet()) {
             result.append(e.getKey()).append(" ").append(e.getValue().get()).append("\n");
         }
         return result.toString();
     }
-
-
-
 }

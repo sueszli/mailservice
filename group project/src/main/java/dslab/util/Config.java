@@ -59,7 +59,7 @@ public final class Config {
     /**
      * Sets the value for the given key.
      *
-     * @param key the property's key
+     * @param key   the property's key
      * @param value the value of the property
      */
     public void setProperty(String key, Object value) {

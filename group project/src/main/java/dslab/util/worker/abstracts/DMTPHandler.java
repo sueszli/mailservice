@@ -24,7 +24,7 @@ public abstract class DMTPHandler implements IDMTPHandler {
     @Override
     public String subject(List<String> subject) {
         validateBegin();
-        if(subject.isEmpty()) throw new ValidationException("subject expected");
+        if (subject.isEmpty()) throw new ValidationException("subject expected");
         email.setSubject(String.join(" ", subject));
         return "ok";
     }
@@ -32,7 +32,7 @@ public abstract class DMTPHandler implements IDMTPHandler {
     @Override
     public String data(List<String> data) {
         validateBegin();
-        if(data.isEmpty()) throw new ValidationException("data expected");
+        if (data.isEmpty()) throw new ValidationException("data expected");
         email.setData(String.join(" ", data));
         return "ok";
     }
@@ -47,17 +47,16 @@ public abstract class DMTPHandler implements IDMTPHandler {
     @Override
     public String to(String to) throws ValidationException {
         validateBegin();
-        List<String> recipients = Arrays.stream(to.split(","))
-                .map(String::trim)
-                .collect(Collectors.toList());
+        List<String> recipients = Arrays.stream(to.split(",")).map(String::trim).collect(Collectors.toList());
         email.setRecipients(recipients);
         return "ok " + recipients.size();
     }
 
 
     protected void validateBegin() {
-        if(!began) throw new ProtocolParseException();
+        if (!began) throw new ProtocolParseException();
     }
+
     protected Email getEmail() {
         return email;
     }

@@ -41,9 +41,9 @@ public class TransferServer implements ITransferServer, Runnable {
      * Creates a new server instance.
      *
      * @param componentId the id of the component that corresponds to the Config resource
-     * @param config the component config
-     * @param in the input stream to read console input from
-     * @param out the output stream to write console output to
+     * @param config      the component config
+     * @param in          the input stream to read console input from
+     * @param out         the output stream to write console output to
      */
     public TransferServer(String componentId, Config config, InputStream in, PrintStream out) {
         this.config = config;
@@ -115,10 +115,7 @@ public class TransferServer implements ITransferServer, Runnable {
     }
 
     private void getRootNs() throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry(
-                config.getString("registry.host"),
-                config.getInt("registry.port")
-        );
+        Registry registry = LocateRegistry.getRegistry(config.getString("registry.host"), config.getInt("registry.port"));
         rootNs = (INameserverRemote) registry.lookup(config.getString("root_id"));
     }
 
@@ -128,14 +125,10 @@ public class TransferServer implements ITransferServer, Runnable {
     public void shutdown() {
         shutdown = true;
 
-        if (forwardPool != null)
-            forwardPool.shutdownNow();
-        if (forwardService != null)
-            forwardService.shutdown();
-        if (connectionPool != null)
-            connectionPool.shutdownNow();
-        if (workerManager != null)
-            workerManager.shutdown();
+        if (forwardPool != null) forwardPool.shutdownNow();
+        if (forwardService != null) forwardService.shutdown();
+        if (connectionPool != null) connectionPool.shutdownNow();
+        if (workerManager != null) workerManager.shutdown();
 
         throw new StopShellException();
     }
@@ -145,50 +138,28 @@ public class TransferServer implements ITransferServer, Runnable {
     public String connStatus() {
         ThreadPoolExecutor executor = (ThreadPoolExecutor) connectionPool;
 
-        return "------\n" +
-            "Threadpool for request execution \n" +
-            "ActiveThreads: " + executor.getActiveCount() + " \n" +
-            "Queue: " + executor.getQueue().size() + " \n" +
-            "PoolSize " + executor.getPoolSize() + " \n" +
-            "-----";
+        return "------\n" + "Threadpool for request execution \n" + "ActiveThreads: " + executor.getActiveCount() + " \n" + "Queue: " + executor.getQueue().size() + " \n" + "PoolSize " + executor.getPoolSize() + " \n" + "-----";
     }
 
     @Command
     public String forwardStatus() {
         ThreadPoolExecutor executor = (ThreadPoolExecutor) forwardPool;
 
-        return "------\n" +
-            "Threadpool for email forwarding\n" +
-            "MaxThreads: " + executor.getMaximumPoolSize() + " \n" +
-            "ActiveThreads: " + executor.getActiveCount() + " \n" +
-            "Queue: " + executor.getQueue().size() + " \n" +
-            "PoolSize " + executor.getPoolSize() + " \n" +
-            "-----";
+        return "------\n" + "Threadpool for email forwarding\n" + "MaxThreads: " + executor.getMaximumPoolSize() + " \n" + "ActiveThreads: " + executor.getActiveCount() + " \n" + "Queue: " + executor.getQueue().size() + " \n" + "PoolSize " + executor.getPoolSize() + " \n" + "-----";
     }
 
     @Command
     public void connStatusTemp() {
         ThreadPoolExecutor executor = (ThreadPoolExecutor) connectionPool;
 
-        String res =  "------\n" +
-                "Threadpool for request execution \n" +
-                "ActiveThreads: " + executor.getActiveCount() + " \n" +
-                "Queue: " + executor.getQueue().size() + " \n" +
-                "PoolSize " + executor.getPoolSize() + " \n" +
-                "-----";
+        String res = "------\n" + "Threadpool for request execution \n" + "ActiveThreads: " + executor.getActiveCount() + " \n" + "Queue: " + executor.getQueue().size() + " \n" + "PoolSize " + executor.getPoolSize() + " \n" + "-----";
         System.out.println(res);
     }
 
     @Command
     public void forwardStatusTemp() {
         ThreadPoolExecutor executor = (ThreadPoolExecutor) forwardPool;
-        String res =  "------\n" +
-                "Threadpool for email forwarding\n" +
-                "MaxThreads: " + executor.getMaximumPoolSize() + " \n" +
-                "ActiveThreads: " + executor.getActiveCount() + " \n" +
-                "Queue: " + executor.getQueue().size() + " \n" +
-                "PoolSize " + executor.getPoolSize() + " \n" +
-                "-----";
+        String res = "------\n" + "Threadpool for email forwarding\n" + "MaxThreads: " + executor.getMaximumPoolSize() + " \n" + "ActiveThreads: " + executor.getActiveCount() + " \n" + "Queue: " + executor.getQueue().size() + " \n" + "PoolSize " + executor.getPoolSize() + " \n" + "-----";
 
         System.out.println(res);
     }

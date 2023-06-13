@@ -42,7 +42,7 @@ public class TransferSenderTask implements ITransferSenderTask {
             try {
                 sendEmail();
             } catch (NoOkResponseException e) {
-                if(!email.isFailureMail())
+                if (!email.isFailureMail())
                     sendFailureMail("error sending mail " + String.join(",", email.getRecipients()));
             }
 
@@ -67,7 +67,7 @@ public class TransferSenderTask implements ITransferSenderTask {
             do {
                 comm.writeLine("to " + String.join(",", email.getRecipients()));
             } while (!checkToResponse() && !email.isFailureMail() && attemptCounter++ < 2 && !email.getRecipients().isEmpty());
-            if(email.getRecipients().isEmpty()) return;
+            if (email.getRecipients().isEmpty()) return;
 
             comm.writeLine("data " + email.getData());
             comm.readLine();
@@ -92,13 +92,12 @@ public class TransferSenderTask implements ITransferSenderTask {
             return new Socket(email.getMailboxIp(), email.getMailboxPort());
         } catch (IOException e) {
             sendFailureMail("could not connect to recipient server");
-            throw new RuntimeException("Could not connect to " + email.getMailboxIp() + ":" + email.getMailboxPort() + ": " + e.getMessage() , e);
+            throw new RuntimeException("Could not connect to " + email.getMailboxIp() + ":" + email.getMailboxPort() + ": " + e.getMessage(), e);
         }
     }
 
     public void closeConnection() {
-        if (socket != null && !socket.isClosed())
-        try {
+        if (socket != null && !socket.isClosed()) try {
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -107,8 +106,7 @@ public class TransferSenderTask implements ITransferSenderTask {
 
     private void checkOkResponse() throws NoOkResponseException, IOException, ErrorResponseException {
         String res = comm.readLine().trim();
-        if(!res.startsWith("ok"))
-            throw new NoOkResponseException();
+        if (!res.startsWith("ok")) throw new NoOkResponseException();
 
     }
 
@@ -117,21 +115,15 @@ public class TransferSenderTask implements ITransferSenderTask {
             comm.readLine();
             return true;
         } catch (ErrorResponseException e) {
-            if(email.isFailureMail())
-                return false;
+            if (email.isFailureMail()) return false;
 
             String res = e.getMessage();
             String[] tmp = res.split(" ");
 
-            if(List.of(tmp).contains("unknown") && List.of(tmp).contains("recipient")) {
-                List<String> invalidNames = Arrays.stream(tmp[tmp.length - 1].split(","))
-                    .map(String::trim)
-                    .collect(Collectors.toList());
+            if (List.of(tmp).contains("unknown") && List.of(tmp).contains("recipient")) {
+                List<String> invalidNames = Arrays.stream(tmp[tmp.length - 1].split(",")).map(String::trim).collect(Collectors.toList());
 
-                List<String> invalidEmails = email.getRecipients()
-                    .stream()
-                    .filter(r -> invalidNames.contains(r.split("@")[0]))
-                    .collect(Collectors.toList());
+                List<String> invalidEmails = email.getRecipients().stream().filter(r -> invalidNames.contains(r.split("@")[0])).collect(Collectors.toList());
 
                 email.getRecipients().removeAll(invalidEmails);
 
@@ -146,18 +138,14 @@ public class TransferSenderTask implements ITransferSenderTask {
         try {
             ServerSpecificEmail failureMail = TransferSenderPreparation.createEmailDeliveryFailure(email.getFrom(), error, inetAddress.getHostAddress(), rootNs);
             (new TransferSenderTask(failureMail, inetAddress, monitoringService, rootNs)).run();
-        } catch (DomainLookUpException ignored) {}
+        } catch (DomainLookUpException ignored) {
+        }
     }
 
     private void sendUdpData() {
-        String data = inetAddress.getHostAddress()
-                + ":"
-                + inetAddress.getHostAddress()
-                + " "
-                + this.email.getFrom();
+        String data = inetAddress.getHostAddress() + ":" + inetAddress.getHostAddress() + " " + this.email.getFrom();
         monitoringService.sendData(data);
     }
-
 
 
 }

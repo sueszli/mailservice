@@ -9,6 +9,7 @@ public interface IWorkerManager {
 
     /**
      * Adds a worker to be managed.
+     *
      * @param socket The socket the worker should handle.
      * @return
      */
@@ -16,7 +17,8 @@ public interface IWorkerManager {
 
     /**
      * Adds a worker, created by the workerFactory, to be managed.
-     * @param socket The socket the worker should handle.
+     *
+     * @param socket        The socket the worker should handle.
      * @param workerFactory The factory used to create the worker.
      */
     void addWorker(Socket socket, ITCPWorkerFactory workerFactory);
