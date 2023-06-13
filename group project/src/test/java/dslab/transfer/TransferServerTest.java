@@ -1,25 +1,24 @@
 package dslab.transfer;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
-
-import java.net.SocketTimeoutException;
-
+import dslab.ComponentFactory;
+import dslab.Constants;
+import dslab.Sockets;
+import dslab.TestBase;
+import dslab.monitoring.MonitoringServerTest;
 import dslab.nsHelper.NsSetupHelper;
 import dslab.nsHelper.NsSetupHelperFactory;
+import dslab.util.Config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import dslab.ComponentFactory;
-import dslab.Constants;
-import dslab.Sockets;
-import dslab.TestBase;
-import dslab.monitoring.MonitoringServerTest;
-import dslab.util.Config;
+import java.net.SocketTimeoutException;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 /**
  * TransferServerTest.

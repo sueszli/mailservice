@@ -1,6 +1,8 @@
 package dslab;
 
-import static org.hamcrest.CoreMatchers.containsString;
+import org.hamcrest.Matcher;
+import org.junit.Assert;
+import org.junit.rules.ErrorCollector;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -8,9 +10,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 
-import org.hamcrest.Matcher;
-import org.junit.Assert;
-import org.junit.rules.ErrorCollector;
+import static org.hamcrest.CoreMatchers.containsString;
 
 public class JunitSocketClient implements Closeable {
 
@@ -43,7 +43,7 @@ public class JunitSocketClient implements Closeable {
      * Creates a new Socket that connects to localhost on the given port and holds the I/O resources.
      *
      * @param port the port to connect to
-     * @param err the error collector used to verify communication
+     * @param err  the error collector used to verify communication
      * @throws IOException if an I/O error occurred while connecting.
      */
 
@@ -95,7 +95,7 @@ public class JunitSocketClient implements Closeable {
     /**
      * Writes the given string to the output stream, and then behaves like {@link #verify(String)}.
      *
-     * @param request the request to send
+     * @param request  the request to send
      * @param response the expected response (partial string match)
      * @throws IOException on I/O errors
      */

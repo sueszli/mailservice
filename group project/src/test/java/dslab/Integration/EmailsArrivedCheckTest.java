@@ -10,7 +10,9 @@ import dslab.transfer.ITransferServer;
 import dslab.util.Config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.rules.Timeout;
 
 import java.io.IOException;
@@ -30,12 +32,8 @@ public class EmailsArrivedCheckTest extends TestBase {
     private static final int mails_per_connection = 5;
     private static final int mailRunner = 5;
     private static final int checkInterval = 500; // time to next check if all emails were sent
-
-
-    private AssertionError threadedAssertion;
-
     private static final int checkRunner = 10;
-
+    private AssertionError threadedAssertion;
     private String mailboxComponentId = "mailbox-earth-planet";
     private IMailboxServer mailbox;
     private int dmapServerPort;
@@ -56,18 +54,19 @@ public class EmailsArrivedCheckTest extends TestBase {
     private TestInputStream monitorIn = new TestInputStream();
 
     private AtomicInteger emailId = new AtomicInteger(0);
+    // Start of NS
+    private NsSetupHelper nsHelper;
 
     public EmailsArrivedCheckTest() {
         timeout = new Timeout(12000, TimeUnit.SECONDS);
     }
 
-    // Start of NS
-    private NsSetupHelper nsHelper;
     @Before
     public void setUpNs() throws Exception {
         nsHelper = NsSetupHelperFactory.createDefaultNsHelper();
         nsHelper.startup();
     }
+
     @After
     public void shutdownNs() throws Exception {
         nsHelper.shutdown();
@@ -143,7 +142,6 @@ public class EmailsArrivedCheckTest extends TestBase {
     }
 
 
-
     @Test
     public void bigEmailPenetration() throws Exception {
 
@@ -153,7 +151,7 @@ public class EmailsArrivedCheckTest extends TestBase {
         email.setRecipients(List.of());
 
         List<Thread> runner = new ArrayList<>();
-        for(int i = 0; i < mailRunner; ++i)
+        for (int i = 0; i < mailRunner; ++i)
             runner.add(getMailRunner(email, true));
 
         // test failure mail
@@ -170,26 +168,26 @@ public class EmailsArrivedCheckTest extends TestBase {
         waitUntilForwardDone(checkInterval);
 
         runner.clear();
-        int userPerRunner = num_users/checkRunner;
-        int mailsPerUser = mailRunner*2*mails_per_connection;
-        for(int i = 0; i < checkRunner; ++i) {
+        int userPerRunner = num_users / checkRunner;
+        int mailsPerUser = mailRunner * 2 * mails_per_connection;
+        for (int i = 0; i < checkRunner; ++i) {
             Thread r;
-            if(i+1 == checkRunner)
-                r = getCheckRunner(i*userPerRunner, num_users, mailsPerUser);
+            if (i + 1 == checkRunner)
+                r = getCheckRunner(i * userPerRunner, num_users, mailsPerUser);
             else
-                r = getCheckRunner(i*userPerRunner, (i+1)*userPerRunner, mailsPerUser);
+                r = getCheckRunner(i * userPerRunner, (i + 1) * userPerRunner, mailsPerUser);
             runner.add(r);
         }
 
         runner.forEach(Thread::start);
 
-        checkEmailAmount("arthur", "23456", 2*mails_per_connection*num_users);
+        checkEmailAmount("arthur", "23456", 2 * mails_per_connection * num_users);
 
         for (Thread thread : runner) {
             thread.join();
         }
 
-        if(threadedAssertion != null) throw threadedAssertion;
+        if (threadedAssertion != null) throw threadedAssertion;
     }
 
 
@@ -201,7 +199,7 @@ public class EmailsArrivedCheckTest extends TestBase {
             for (int i = 0; i < iterations; ++i) {
                 client.sendAndVerify("begin", "ok");
                 client.sendAndVerify("from " + email.getFrom(), "ok");
-                client.sendAndVerify("to " + String.join(",",email.getRecipients()), "ok " + email.getRecipients().size());
+                client.sendAndVerify("to " + String.join(",", email.getRecipients()), "ok " + email.getRecipients().size());
                 client.sendAndVerify("subject " + email.getSubject(), "ok");
                 client.sendAndVerify("data " + email.getSubject(), "ok");
                 client.sendAndVerify("send", "ok");
@@ -220,8 +218,8 @@ public class EmailsArrivedCheckTest extends TestBase {
             InetAddress add = client.getSocket().getInetAddress();
             InetAddress cl = client.getSocket().getLocalAddress();
             err.checkThat(listResult, containsString(String.
-                format("%s %s", isError ? "mailer@" + "0.0.0.0" : email.getFrom() ,
-                    email.getSubject())));
+                    format("%s %s", isError ? "mailer@" + "0.0.0.0" : email.getFrom(),
+                            email.getSubject())));
 
             client.sendAndVerify("logout", "ok");
             client.sendAndVerify("quit", "ok bye");
@@ -247,9 +245,8 @@ public class EmailsArrivedCheckTest extends TestBase {
     }
 
     /**
-     *
-     * @param fromUser inclusive
-     * @param toUser exclusive
+     * @param fromUser   inclusive
+     * @param toUser     exclusive
      * @param emailCount
      * @throws IOException
      */
@@ -257,7 +254,7 @@ public class EmailsArrivedCheckTest extends TestBase {
         LOG.info(String.format(Thread.currentThread().getName() + ": All users %d-%d should have %d mails", fromUser, toUser, emailCount));
         try (JunitSocketClient client = new JunitSocketClient(dmapServerPort, err)) {
             client.verify("ok DMAP2.0");
-            for(int i = fromUser; i < toUser; ++i) {
+            for (int i = fromUser; i < toUser; ++i) {
                 LOG.info(String.format(Thread.currentThread().getName() + ": Check user %s ...", i));
                 client.sendAndVerify(String.format("login %s %s", i, 'p'), "ok");
                 client.send("list");
@@ -275,12 +272,12 @@ public class EmailsArrivedCheckTest extends TestBase {
     private Thread getMailRunner(Email copy, boolean addRecv) {
         return new Thread(() -> {
             Email email = new Email(copy); //create copy of mail
-            for(int i = 0; i < num_users; ++i) {
-                if(addRecv)
+            for (int i = 0; i < num_users; ++i) {
+                if (addRecv)
                     email.setRecipients(List.of(
-                        i % num_users + "@earth.planet",
-                        (i+1) % num_users + "@earth.planet"
-                        ));
+                            i % num_users + "@earth.planet",
+                            (i + 1) % num_users + "@earth.planet"
+                    ));
                 try {
                     sendMail(email, mails_per_connection);
                 } catch (Exception e) {
@@ -298,15 +295,15 @@ public class EmailsArrivedCheckTest extends TestBase {
             List<String> servers = transferOut.getLines();
             transferOut.reset();
             String activeThreads = servers.stream()
-                .filter(s -> s.contains("ActiveThreads:"))
-                .findFirst().orElse("notfound 1");
+                    .filter(s -> s.contains("ActiveThreads:"))
+                    .findFirst().orElse("notfound 1");
             String queue = servers.stream()
-                .filter(s -> s.contains("Queue:"))
-                .findFirst().orElse("notfound 0");
+                    .filter(s -> s.contains("Queue:"))
+                    .findFirst().orElse("notfound 0");
             int activeThreadsCount = Integer.parseInt(activeThreads.split(" ")[1]);
             int queueCount = Integer.parseInt(queue.split(" ")[1]);
             LOG.info(String.format("%d threads are transfering mails and %d are in queue", activeThreadsCount, queueCount));
-            if( activeThreadsCount == 0) {
+            if (activeThreadsCount == 0) {
                 break;
             }
         }

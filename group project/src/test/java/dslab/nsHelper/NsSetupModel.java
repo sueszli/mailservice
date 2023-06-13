@@ -1,13 +1,11 @@
 package dslab.nsHelper;
 
-import at.ac.tuwien.dsg.orvell.Shell;
 import dslab.ComponentFactory;
 import dslab.Constants;
 import dslab.TestInputStream;
 import dslab.TestOutputStream;
 import dslab.mailbox.MailboxServerProtocolTest;
 import dslab.nameserver.INameserver;
-import dslab.util.Config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -58,6 +56,7 @@ public class NsSetupModel {
         in.addLine("shutdown");
         try {
             Thread.sleep(Constants.NS_COMPONENT_SHUTDOWN_WAIT);
-        } catch (InterruptedException ignored) {}
+        } catch (InterruptedException ignored) {
+        }
     }
 }

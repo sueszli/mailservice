@@ -2,8 +2,8 @@ package dslab.util.worker;
 
 public class AfterExecuteHookTask implements Runnable {
 
-    private Runnable task;
-    private Hook afterExecuteHook;
+    private final Runnable task;
+    private final Hook afterExecuteHook;
 
     public AfterExecuteHookTask(Runnable task, Hook afterExecuteHook) {
         this.task = task;

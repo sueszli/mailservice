@@ -1,12 +1,7 @@
 package dslab;
 
 import java.io.IOException;
-import java.net.BindException;
-import java.net.DatagramSocket;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
+import java.net.*;
 
 /**
  * Util class for checking sockets.
@@ -23,7 +18,7 @@ public final class Sockets {
      *
      * @param host the expected server socket host
      * @param port the expected server socket port
-     * @param ms the time in milliseconds.
+     * @param ms   the time in milliseconds.
      * @throws SocketTimeoutException if the timeout period was reached
      */
     public static void waitForSocket(String host, int port, long ms) throws SocketTimeoutException {

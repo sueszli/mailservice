@@ -45,16 +45,16 @@ public class CommandClass_V2 extends CommandClass {
         Method[] methods = clazz.getDeclaredMethods();
 
         Arrays.stream(methods).unordered().forEach(
-            m -> {
-                // if Method has @Command
-                if (m.isAnnotationPresent(Command.class)) {
-                    // check if Method is already in list
-                    boolean novel = commandMethods.stream().unordered().noneMatch(c -> c.getMethod().getName().equals(m.getName()));
-                    if (novel) {
-                        commandMethods.add(new CommandMethod(m));
+                m -> {
+                    // if Method has @Command
+                    if (m.isAnnotationPresent(Command.class)) {
+                        // check if Method is already in list
+                        boolean novel = commandMethods.stream().unordered().noneMatch(c -> c.getMethod().getName().equals(m.getName()));
+                        if (novel) {
+                            commandMethods.add(new CommandMethod(m));
+                        }
                     }
                 }
-            }
         );
 
         this.getCommandMethods(clazz.getSuperclass()); // runs recursively for each superclass

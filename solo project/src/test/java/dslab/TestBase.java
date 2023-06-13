@@ -1,11 +1,11 @@
 package dslab;
 
-import java.util.concurrent.TimeUnit;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.Timeout;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Contains a generic setup for a unit test.

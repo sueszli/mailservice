@@ -7,8 +7,8 @@ import java.net.InetSocketAddress;
 
 public class MonitoringService {
 
-    private String monitoringHost;
-    private int monitoringPort;
+    private final String monitoringHost;
+    private final int monitoringPort;
 
     public MonitoringService(String monitoringHost, int monitoringPort) {
         this.monitoringHost = monitoringHost;

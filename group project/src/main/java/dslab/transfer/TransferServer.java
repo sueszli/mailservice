@@ -53,6 +53,11 @@ public class TransferServer implements ITransferServer, Runnable {
         shell.setPrompt(componentId + "> ");
     }
 
+    public static void main(String[] args) throws Exception {
+        ITransferServer server = ComponentFactory.createTransferServer(args[0], System.in, System.out);
+        server.run();
+    }
+
     @Override
     public void run() {
 
@@ -119,7 +124,6 @@ public class TransferServer implements ITransferServer, Runnable {
         rootNs = (INameserverRemote) registry.lookup(config.getString("root_id"));
     }
 
-
     @Override
     @Command
     public void shutdown() {
@@ -132,7 +136,6 @@ public class TransferServer implements ITransferServer, Runnable {
 
         throw new StopShellException();
     }
-
 
     @Command
     public String connStatus() {
@@ -164,7 +167,6 @@ public class TransferServer implements ITransferServer, Runnable {
         System.out.println(res);
     }
 
-
     @Command
     public String forwardThreads() {
         ThreadPoolExecutor executor = (ThreadPoolExecutor) forwardPool;
@@ -175,11 +177,6 @@ public class TransferServer implements ITransferServer, Runnable {
     public void setMaxForwardThreads(int count) {
         ThreadPoolExecutor executor = (ThreadPoolExecutor) forwardPool;
         executor.setMaximumPoolSize(count);
-    }
-
-    public static void main(String[] args) throws Exception {
-        ITransferServer server = ComponentFactory.createTransferServer(args[0], System.in, System.out);
-        server.run();
     }
 
 

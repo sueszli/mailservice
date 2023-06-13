@@ -1,22 +1,21 @@
 package dslab.monitoring;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertThat;
-
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetSocketAddress;
-
+import dslab.ComponentFactory;
+import dslab.Constants;
+import dslab.TestBase;
+import dslab.util.Config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import dslab.ComponentFactory;
-import dslab.Constants;
-import dslab.TestBase;
-import dslab.util.Config;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetSocketAddress;
+
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests whether the UDP-based monitoring protocol is implemented correctly on the server side.

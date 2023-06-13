@@ -1,19 +1,16 @@
 package dslab.mailbox;
 
-import static org.hamcrest.CoreMatchers.containsString;
-
+import dslab.*;
 import dslab.nsHelper.NsSetupHelper;
 import dslab.nsHelper.NsSetupHelperFactory;
+import dslab.util.Config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import dslab.ComponentFactory;
-import dslab.Constants;
-import dslab.JunitSocketClient;
-import dslab.Sockets;
-import dslab.TestBase;
-import dslab.util.Config;
+import static org.hamcrest.CoreMatchers.containsString;
 
 public class MailboxServerProtocolTest extends TestBase {
 

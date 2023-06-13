@@ -10,9 +10,9 @@ import java.util.MissingResourceException;
 import java.util.stream.Collectors;
 
 public abstract class DMAPHandler implements IDMAPHandler {
-    protected String loggedInUser;
-    private final Config users;
     protected final IMailboxDataRepository repo;
+    private final Config users;
+    protected String loggedInUser;
 
     public DMAPHandler(Config users, IMailboxDataRepository repo) {
         this.users = users;

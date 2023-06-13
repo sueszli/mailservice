@@ -3,7 +3,6 @@ package dslab.util.worker.abstracts;
 import at.ac.tuwien.dsg.orvell.annotation.Command;
 import dslab.util.protocolParser.listener.DMTP2Listener;
 import dslab.util.worker.handlers.IDMTP2Handler;
-import dslab.util.worker.handlers.IDMTPHandler;
 
 import java.net.Socket;
 

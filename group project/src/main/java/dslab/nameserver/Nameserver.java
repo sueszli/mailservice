@@ -16,7 +16,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,9 +25,8 @@ public class Nameserver implements INameserver {
     private final Shell shell;
 
     private final boolean isRoot;
-    private Registry registry;
-
     private final INameserverRemote nsObj; //to export und unexport
+    private Registry registry;
     private INameserverRemote nsRemote; // available to invoke remotly
 
 
@@ -50,6 +48,11 @@ public class Nameserver implements INameserver {
         shell.setPrompt(componentId + "> ");
 
         this.nsObj = new NameserverRemote(new Logger(shell.out()));
+    }
+
+    public static void main(String[] args) throws Exception {
+        INameserver component = ComponentFactory.createNameserver(args[0], System.in, System.out);
+        component.run();
     }
 
     @Override
@@ -144,11 +147,6 @@ public class Nameserver implements INameserver {
 
         INameserverRemote root = (INameserverRemote) registry.lookup(config.getString("root_id"));
         root.registerNameserver(config.getString("domain"), nsRemote);
-    }
-
-    public static void main(String[] args) throws Exception {
-        INameserver component = ComponentFactory.createNameserver(args[0], System.in, System.out);
-        component.run();
     }
 
 }

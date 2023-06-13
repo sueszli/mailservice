@@ -46,9 +46,9 @@ public class Shell_V2 {
         List<CommandMethod> commandMethods = commandClass.getCommandMethods();
 
         commandMethods.stream().unordered().forEach(
-            // converts (commandMethod, Worker) -> Command
-            // stores <command name, Command> in Map
-            m -> this.commands.put(m.getName(), new CommandMethodAdapter_V2(m, worker)) // <-----------------------------
+                // converts (commandMethod, Worker) -> Command
+                // stores <command name, Command> in Map
+                m -> this.commands.put(m.getName(), new CommandMethodAdapter_V2(m, worker)) // <-----------------------------
         );
     }
 

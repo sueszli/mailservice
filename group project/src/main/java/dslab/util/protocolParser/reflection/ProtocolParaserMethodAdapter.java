@@ -12,8 +12,8 @@ import java.lang.reflect.Parameter;
 import java.util.List;
 
 public class ProtocolParaserMethodAdapter implements Command {
-    private CommandMethod method;
-    private Object object;
+    private final CommandMethod method;
+    private final Object object;
     private StringTransform outputTransform = (s -> s);
 
     public ProtocolParaserMethodAdapter(CommandMethod method, Object object) {

@@ -1,25 +1,16 @@
 package dslab.client;
 
-import static org.hamcrest.CoreMatchers.is;
-
-import java.util.concurrent.CountDownLatch;
-
-import dslab.nsHelper.NsSetupHelper;
-import dslab.nsHelper.NsSetupHelperFactory;
+import dslab.*;
+import dslab.util.Config;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 
-import dslab.ComponentFactory;
-import dslab.Constants;
-import dslab.JunitSocketClient;
-import dslab.SimpleTcpServer;
-import dslab.Sockets;
-import dslab.TestInputStream;
-import dslab.TestOutputStream;
-import dslab.util.Config;
+import java.util.concurrent.CountDownLatch;
+
+import static org.hamcrest.CoreMatchers.is;
 
 /**
  * Tests that the message client connects to the configured DMAP server at startup and sends the startsecure command.

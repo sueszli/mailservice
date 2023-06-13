@@ -6,17 +6,16 @@ import dslab.util.worker.AfterExecuteHookTask;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 public class ForwardService {
-    private List<TransferSenderTask> activeTasks = new ArrayList<>();
-    private ExecutorService forwardPool;
-    private MonitoringService monitoringService;
-    private InetAddress inetAddress;
+    private final List<TransferSenderTask> activeTasks = new ArrayList<>();
+    private final ExecutorService forwardPool;
+    private final MonitoringService monitoringService;
+    private final InetAddress inetAddress;
 
-    private INameserverRemote rootNS;
+    private final INameserverRemote rootNS;
 
     public ForwardService(ExecutorService forwardPool, MonitoringService monitoringService, InetAddress inetAddress, INameserverRemote rootNs) {
         this.forwardPool = forwardPool;

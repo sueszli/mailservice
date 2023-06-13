@@ -1,10 +1,10 @@
 package dslab.integration;
+
 import dslab.JunitSocketClient;
 import dslab.TestBase;
 import dslab.mail.Mail;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Test;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class OnMail extends TestBase {
             for (int i = 0; i < iterations; ++i) {
                 client.sendAndVerify("begin", "ok");
                 client.sendAndVerify("from " + email.getSender(), "ok");
-                client.sendAndVerify("to " + String.join(",",email.getRecipients()), "ok " + email.getRecipients().size());
+                client.sendAndVerify("to " + String.join(",", email.getRecipients()), "ok " + email.getRecipients().size());
                 client.sendAndVerify("subject " + email.getSubject(), "ok");
                 client.sendAndVerify("data " + email.getSubject(), "ok");
                 client.sendAndVerify("send", "ok");

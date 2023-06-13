@@ -1,18 +1,11 @@
 package dslab.naming;
 
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-
-import java.rmi.NotBoundException;
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-
+import dslab.ComponentFactory;
+import dslab.Constants;
+import dslab.TestInputStream;
+import dslab.TestOutputStream;
+import dslab.nameserver.INameserverRemote;
+import dslab.util.Config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
@@ -22,12 +15,13 @@ import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.runners.MethodSorters;
 
-import dslab.ComponentFactory;
-import dslab.Constants;
-import dslab.TestInputStream;
-import dslab.TestOutputStream;
-import dslab.nameserver.INameserverRemote;
-import dslab.util.Config;
+import java.rmi.NotBoundException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
+import static org.hamcrest.CoreMatchers.*;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class NameserverTest {

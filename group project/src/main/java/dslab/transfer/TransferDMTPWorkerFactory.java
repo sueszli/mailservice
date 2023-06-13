@@ -3,15 +3,11 @@ package dslab.transfer;
 import dslab.nameserver.INameserverRemote;
 import dslab.util.worker.ITCPWorkerFactory;
 import dslab.util.worker.abstracts.DMTP2Worker;
-import dslab.util.worker.abstracts.DMTPWorker;
 import dslab.util.worker.abstracts.Worker;
 import dslab.util.worker.handlers.IDMTP2Handler;
-import dslab.util.worker.handlers.IDMTPHandler;
 
 import java.net.InetAddress;
 import java.net.Socket;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 
 public class TransferDMTPWorkerFactory implements ITCPWorkerFactory {
 

@@ -14,10 +14,9 @@ import java.net.DatagramSocket;
 public class MonitoringServer implements IMonitoringServer {
 
     private final Config config;
-    private DatagramSocket datagramSocket;
     private final Shell shell;
-
     private final MonitoringRepository repo;
+    private DatagramSocket datagramSocket;
     private PackageListener listener;
 
     /**
@@ -35,6 +34,11 @@ public class MonitoringServer implements IMonitoringServer {
         shell = new Shell(in, out);
         shell.register(this);
         shell.setPrompt(componentId + "> ");
+    }
+
+    public static void main(String[] args) throws Exception {
+        IMonitoringServer server = ComponentFactory.createMonitoringServer(args[0], System.in, System.out);
+        server.run();
     }
 
     @Override
@@ -77,11 +81,6 @@ public class MonitoringServer implements IMonitoringServer {
         } catch (IOException e) {
             throw new RuntimeException("Cannot listen on UDP port.", e);
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-        IMonitoringServer server = ComponentFactory.createMonitoringServer(args[0], System.in, System.out);
-        server.run();
     }
 
 }

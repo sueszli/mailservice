@@ -1,15 +1,9 @@
 package dslab.client;
 
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-
-import java.util.concurrent.TimeUnit;
-
+import dslab.*;
 import dslab.nsHelper.NsSetupHelper;
 import dslab.nsHelper.NsSetupHelperFactory;
+import dslab.util.Config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.After;
@@ -18,13 +12,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 
-import dslab.ComponentFactory;
-import dslab.Constants;
-import dslab.JunitSocketClient;
-import dslab.Sockets;
-import dslab.TestInputStream;
-import dslab.TestOutputStream;
-import dslab.util.Config;
+import java.util.concurrent.TimeUnit;
+
+import static org.hamcrest.CoreMatchers.*;
 
 /**
  * Starts a mailbox server and a message client, and injects mails to the mailbox server that are read by the mail
@@ -47,11 +37,13 @@ public class MessageClientMailboxTest {
     private Thread messageClientThread;
 
     private NsSetupHelper nsHelper;
+
     @Before
     public void setUpNs() throws Exception {
         nsHelper = NsSetupHelperFactory.createDefaultNsHelper();
         nsHelper.startup();
     }
+
     @After
     public void shutdownNs() throws Exception {
         nsHelper.shutdown();

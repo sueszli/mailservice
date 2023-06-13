@@ -1,7 +1,5 @@
 package dslab.nsHelper;
 
-import dslab.util.Config;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +15,7 @@ public class NsSetupHelper {
     public void startup() throws Exception {
         try {
             for (NsSetupModel m : nsSetupModels) {
-                    m.start();
+                m.start();
             }
         } catch (Exception e) {
             nsSetupModels.forEach(NsSetupModel::shutdown);

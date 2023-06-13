@@ -30,27 +30,24 @@ public class EmailsArrivedCheck extends TestBase {
     private static final int mails_per_connection = 5;
     private static final int mailRunner = 5;
     private static final int checkRunner = 10;
-    private AssertionError threadedAssertion;
     private final String mailboxComponentId = "mailbox-earth-planet";
+    private final TestInputStream mailboxIn = new TestInputStream();
+    private final String transferComponentId = "transfer-1";
+    private final TestInputStream transferIn = new TestInputStream();
+    private final TestOutputStream transferOut = new TestOutputStream();
+    private final String monitorComponentId = "monitoring";
+    private final TestInputStream monitorIn = new TestInputStream();
+    private final AtomicInteger emailId = new AtomicInteger(0);
+    private AssertionError threadedAssertion;
     private IMailboxServer mailbox;
     private int dmapServerPort;
     private Thread mailboxThread;
-    private final TestInputStream mailboxIn = new TestInputStream();
-
-    private final String transferComponentId = "transfer-1";
     private ITransferServer transfer;
     private int dmtpServerPort;
     private Thread transferThread;
-    private final TestInputStream transferIn = new TestInputStream();
-    private final TestOutputStream transferOut = new TestOutputStream();
-
-    private final String monitorComponentId = "monitoring";
     private IMonitoringServer monitor;
     private int udpServerPort;
     private Thread monitorThread;
-    private final TestInputStream monitorIn = new TestInputStream();
-
-    private final AtomicInteger emailId = new AtomicInteger(0);
 
     public EmailsArrivedCheck() {
         timeout = new Timeout(12000, TimeUnit.SECONDS);

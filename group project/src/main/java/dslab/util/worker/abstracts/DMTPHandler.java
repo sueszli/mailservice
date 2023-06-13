@@ -10,10 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class DMTPHandler implements IDMTPHandler {
-    private boolean began = false;
-
     private final Email email = new Email();
-
+    private boolean began = false;
 
     @Override
     public String begin() {

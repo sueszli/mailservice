@@ -20,12 +20,12 @@ import java.security.Key;
 import java.util.Base64;
 
 public class MailboxDMAP2Worker extends DMAPWorker implements DMAPListener, IDMAP2Handler {
-    private Socket clientSocket;
+    private final Socket clientSocket;
+    private final Key key;
+    private final ICryptoService decryptionService;
+    private final String componentId;
     private SecretKey secretKey;
     private IvParameterSpec iv;
-    private Key key;
-    private ICryptoService decryptionService;
-    private String componentId;
 
     protected MailboxDMAP2Worker(Socket clientSocket, IDMAPHandler dmapHandler, String componentId, Key key) {
         super(clientSocket, dmapHandler, "ok DMAP2.0");

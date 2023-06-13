@@ -10,10 +10,10 @@ import java.net.Socket;
 import java.security.PrivateKey;
 
 public class MailboxDMAPWorkerFactory implements ITCPWorkerFactory {
-    private Config users;
-    private IMailboxDataRepository repo;
-    private PrivateKey key;
-    private String componentId;
+    private final Config users;
+    private final IMailboxDataRepository repo;
+    private final PrivateKey key;
+    private final String componentId;
 
     public MailboxDMAPWorkerFactory(Config users, IMailboxDataRepository repo, PrivateKey key, String componentId) {
         this.users = users;

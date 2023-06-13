@@ -19,13 +19,12 @@ import java.util.stream.Collectors;
 public class TransferSenderTask implements ITransferSenderTask {
 
 
-    private ServerSpecificEmail email;
+    private final MonitoringService monitoringService;
+    private final ServerSpecificEmail email;
+    private final InetAddress inetAddress;
+    private final INameserverRemote rootNs;
     private Socket socket;
     private SockCom comm;
-    private InetAddress inetAddress;
-    private final MonitoringService monitoringService;
-
-    private INameserverRemote rootNs;
 
     public TransferSenderTask(ServerSpecificEmail email, InetAddress inetAddress, MonitoringService monitoringService, INameserverRemote rootNs) {
         this.email = email;

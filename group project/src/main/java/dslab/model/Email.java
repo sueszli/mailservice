@@ -1,13 +1,10 @@
 package dslab.model;
 
 import dslab.exception.ValidationException;
-import dslab.util.security.Keys;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -30,6 +27,25 @@ public class Email {
         from = config.from;
         recipients = new ArrayList<>(config.recipients);
         hash = config.hash;
+    }
+
+    public static String calculateEmailHash(Email email, SecretKeySpec sharedSecret) {
+        try {
+            String to = String.join(",", email.getRecipients());
+            String hashInput = String.join("\n", email.from, to, email.subject, email.data);
+
+            Mac hmac = Mac.getInstance("HmacSHA256");
+            hmac.init(sharedSecret);
+            byte[] hash = hmac.doFinal(hashInput.getBytes());
+            return Base64.getEncoder().encodeToString(hash);
+
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            return null;
+        }
+    }
+
+    public static boolean invalidAddress(String email) {
+        return !email.matches("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$");
     }
 
     public String getSubject() {
@@ -86,25 +102,6 @@ public class Email {
         if (recipients == null || recipients.isEmpty()) throw new ValidationException("no recipients");
         for (String r : recipients)
             if (invalidAddress(r)) throw new ValidationException("includes invalid recipients address");
-    }
-
-    public static String calculateEmailHash(Email email, SecretKeySpec sharedSecret) {
-        try {
-            String to = String.join(",", email.getRecipients());
-            String hashInput = String.join("\n", email.from, to, email.subject, email.data);
-
-            Mac hmac = Mac.getInstance("HmacSHA256");
-            hmac.init(sharedSecret);
-            byte[] hash = hmac.doFinal(hashInput.getBytes());
-            return Base64.getEncoder().encodeToString(hash);
-
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            return null;
-        }
-    }
-
-    public static boolean invalidAddress(String email) {
-        return !email.matches("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$");
     }
 
     @Override

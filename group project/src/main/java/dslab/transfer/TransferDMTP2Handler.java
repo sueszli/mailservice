@@ -1,7 +1,6 @@
 package dslab.transfer;
 
 import dslab.nameserver.INameserverRemote;
-import dslab.util.worker.abstracts.DMTP2Handler;
 import dslab.util.worker.handlers.IDMTP2Handler;
 
 import java.net.InetAddress;

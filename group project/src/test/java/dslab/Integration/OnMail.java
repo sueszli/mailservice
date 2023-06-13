@@ -33,7 +33,7 @@ public class OnMail extends TestBase {
             for (int i = 0; i < interations; ++i) {
                 client.sendAndVerify("begin", "ok");
                 client.sendAndVerify("from " + email.getFrom(), "ok");
-                client.sendAndVerify("to " + String.join(",",email.getRecipients()), "ok " + email.getRecipients().size());
+                client.sendAndVerify("to " + String.join(",", email.getRecipients()), "ok " + email.getRecipients().size());
                 client.sendAndVerify("subject " + email.getSubject(), "ok");
                 client.sendAndVerify("data " + email.getSubject(), "ok");
                 client.sendAndVerify("send", "ok");

@@ -2,7 +2,6 @@ package dslab.util;
 
 import java.io.PrintStream;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class Logger {

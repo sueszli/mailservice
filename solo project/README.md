@@ -24,6 +24,7 @@ You can list them with
     ./gradlew tasks --all
 
 And search for 'Other tasks' starting with `run-`. For example, to run the monitoring server, execute:
-(the `--console=plain` flag disables CLI features, like color output, that may break the console output when running a interactive application)
+(the `--console=plain` flag disables CLI features, like color output, that may break the console output when running a
+interactive application)
 
     ./gradlew --console=plain run-monitoring

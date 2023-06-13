@@ -37,7 +37,7 @@ public class InboxRepository {
                 .map(r -> r.split("@")[0]) // usernames
                 .collect(Collectors.toList())
                 .stream().unordered().forEach(
-                    r -> userInboxes.get(r).put(mail.getId(), mail) // Inbox based on username -> <id, mail>
+                        r -> userInboxes.get(r).put(mail.getId(), mail) // Inbox based on username -> <id, mail>
                 );
     }
 

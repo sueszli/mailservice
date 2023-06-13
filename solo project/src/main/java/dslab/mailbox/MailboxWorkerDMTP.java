@@ -95,7 +95,7 @@ public class MailboxWorkerDMTP extends Worker {
                 // get non existent users
                 .stream().unordered()
                 .filter(
-                    u -> existentUsers.stream().noneMatch(eu -> eu.equals(u))
+                        u -> existentUsers.stream().noneMatch(eu -> eu.equals(u))
                 ).collect(Collectors.toList());
 
         if (!nonExistentUsers.isEmpty()) {
@@ -103,7 +103,7 @@ public class MailboxWorkerDMTP extends Worker {
         }
 
         // all recipients are known
-        List<String> rs =  Stream.of(to.split(",")).unordered()
+        List<String> rs = Stream.of(to.split(",")).unordered()
                 .filter(Validator::validMailAddressBoolean) //valid
                 .filter(r -> r.split("@")[1].equals(domain)) //to this domain
                 .collect(Collectors.toList());

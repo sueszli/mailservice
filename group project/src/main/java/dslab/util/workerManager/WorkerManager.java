@@ -5,15 +5,13 @@ import dslab.util.worker.ITCPWorkerFactory;
 import dslab.util.worker.abstracts.Worker;
 
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
 public class WorkerManager implements IWorkerManager {
 
-    private boolean shutdown = false;
     private final ConcurrentLinkedQueue<Worker> workers = new ConcurrentLinkedQueue<>();
+    private boolean shutdown = false;
     private ITCPWorkerFactory workerFactory;
     private ExecutorService workerPool;
 

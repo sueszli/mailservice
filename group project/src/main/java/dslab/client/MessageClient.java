@@ -33,19 +33,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MessageClient implements IMessageClient {
+    private final Shell shell;
     String componentId;
     Config config;
     InputStream in;
     PrintStream out;
-
-    private Shell shell;
+    SecretKeySpec sharedSecret; //used for hashing
     private Socket mailboxSock;
     private SockCom mailSockCom;
     private boolean quit = false;
-
     private AESCryptoService cryptoService;
-
-    SecretKeySpec sharedSecret; //used for hashing
 
     /**
      * Creates a new client instance.
@@ -65,6 +62,11 @@ public class MessageClient implements IMessageClient {
         shell.register(this);
         shell.setPrompt(config.getString("mailbox.user") + "> ");
 
+    }
+
+    public static void main(String[] args) throws Exception {
+        IMessageClient client = ComponentFactory.createMessageClient(args[0], System.in, System.out);
+        client.run();
     }
 
     @Override
@@ -169,14 +171,12 @@ public class MessageClient implements IMessageClient {
         }
     }
 
-
     @Override
     @Command
     public void inbox() {
 
         try {
             String res = mailSockCom.writeAndReadLine("list");
-            ;
             if (!res.endsWith("\nok")) {
                 out.println("Inbox could not get loaded");
                 return;
@@ -354,11 +354,6 @@ public class MessageClient implements IMessageClient {
         }
 
         throw new RuntimeException(reason);
-    }
-
-    public static void main(String[] args) throws Exception {
-        IMessageClient client = ComponentFactory.createMessageClient(args[0], System.in, System.out);
-        client.run();
     }
 
 }

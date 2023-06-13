@@ -13,11 +13,10 @@ import java.net.Socket;
 public abstract class TCPWorker extends Worker {
 
     private final Socket clientSocket;
+    private final ProtocolParser handler;
+    private final String initMessage;
     protected SockCom comm;
-    private ProtocolParser handler;
     private StringTransform inputTransform = (s -> s);
-
-    private String initMessage;
 
     protected TCPWorker(Socket clientSocket, String initMessage) {
         this.clientSocket = clientSocket;

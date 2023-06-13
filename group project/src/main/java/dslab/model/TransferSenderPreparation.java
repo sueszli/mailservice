@@ -10,67 +10,15 @@ import java.util.*;
 
 public class TransferSenderPreparation {
 
-    private ServerSpecificEmail domainLookUpFailure;
-    private List<ServerSpecificEmail> toSend = new ArrayList<ServerSpecificEmail>();
     private static final Config config = new Config("domains");
-    private boolean ignoreFailures = false;
-
     private final INameserverRemote ns;
+    private final List<ServerSpecificEmail> toSend = new ArrayList<ServerSpecificEmail>();
+    private ServerSpecificEmail domainLookUpFailure;
+    private boolean ignoreFailures = false;
 
     public TransferSenderPreparation(Email email, String ip, INameserverRemote ns) {
         this.ns = ns;
         domainLookUp(email, ip);
-    }
-
-    public ServerSpecificEmail getDomainLookUpFailure() {
-        return domainLookUpFailure;
-    }
-
-    public List<ServerSpecificEmail> getToSend() {
-        return toSend;
-    }
-
-
-    private void domainLookUp(Email email, String ip) {
-
-        List<String> recipients = new ArrayList<>(email.getRecipients());
-        email = new Email(email);
-        email.getRecipients().clear();
-
-        HashMap<String, ServerSpecificEmail> emailsToSend = new HashMap<String, ServerSpecificEmail>();
-
-        for (String r : recipients) {
-            String domain = getDomain(r);
-
-            String[] ipPort;
-            try {
-                if (!emailsToSend.containsKey(domain)) {
-                    ipPort = getDomainAddress(domain, ns);
-                    emailsToSend.put(domain, new ServerSpecificEmail(email, ipPort[0], Integer.parseInt(ipPort[1])));
-                }
-
-                emailsToSend.get(domain).getRecipients().add(r);
-
-            } catch (DomainLookUpException e) {
-                if (ignoreFailures) continue;
-
-                if (domainLookUpFailure == null) {
-                    try {
-                        domainLookUpFailure = createEmailDeliveryFailure(email.getFrom(), "error domain unknown for ", ip, ns);
-                        domainLookUpFailure.setFailureMail(true);
-                    } catch (DomainLookUpException ex) {
-                        ignoreFailures = true;
-                        continue;
-                    }
-                }
-
-                domainLookUpFailure.setData(domainLookUpFailure.getData() + r + ",");
-            }
-        }
-
-        for (Map.Entry<String, ServerSpecificEmail> entry : emailsToSend.entrySet()) {
-            toSend.add(entry.getValue());
-        }
     }
 
     public static ServerSpecificEmail createEmailDeliveryFailure(String receiver, String data, String ip, INameserverRemote rooNs) throws DomainLookUpException {
@@ -111,6 +59,56 @@ public class TransferSenderPreparation {
             return address.split(":");
         } catch (RemoteException e) {
             throw new RuntimeException("Lookup failed: " + e.getMessage(), e);
+        }
+    }
+
+    public ServerSpecificEmail getDomainLookUpFailure() {
+        return domainLookUpFailure;
+    }
+
+    public List<ServerSpecificEmail> getToSend() {
+        return toSend;
+    }
+
+    private void domainLookUp(Email email, String ip) {
+
+        List<String> recipients = new ArrayList<>(email.getRecipients());
+        email = new Email(email);
+        email.getRecipients().clear();
+
+        HashMap<String, ServerSpecificEmail> emailsToSend = new HashMap<String, ServerSpecificEmail>();
+
+        for (String r : recipients) {
+            String domain = getDomain(r);
+
+            String[] ipPort;
+            try {
+                if (!emailsToSend.containsKey(domain)) {
+                    ipPort = getDomainAddress(domain, ns);
+                    emailsToSend.put(domain, new ServerSpecificEmail(email, ipPort[0], Integer.parseInt(ipPort[1])));
+                }
+
+                emailsToSend.get(domain).getRecipients().add(r);
+
+            } catch (DomainLookUpException e) {
+                if (ignoreFailures) continue;
+
+                if (domainLookUpFailure == null) {
+                    try {
+                        domainLookUpFailure = createEmailDeliveryFailure(email.getFrom(), "error domain unknown for ", ip, ns);
+                        domainLookUpFailure.setFailureMail(true);
+                    } catch (DomainLookUpException ex) {
+                        ignoreFailures = true;
+                        continue;
+                    }
+                }
+
+                domainLookUpFailure.setData(domainLookUpFailure.getData() + r + ",");
+            }
+        }
+
+        for (Map.Entry<String, ServerSpecificEmail> entry : emailsToSend.entrySet()) {
+            toSend.add(entry.getValue());
         }
     }
 

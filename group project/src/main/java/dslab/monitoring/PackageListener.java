@@ -8,11 +8,10 @@ import java.util.Arrays;
 
 public class PackageListener extends Thread {
 
-    private boolean shutdown;
     private final DatagramSocket socket;
-
     private final int MAX_BUFFER_LENGTH = 1024;
     private final MonitoringRepository repo;
+    private boolean shutdown;
 
     public PackageListener(DatagramSocket socket, MonitoringRepository repo) {
         this.socket = socket;

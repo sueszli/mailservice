@@ -22,14 +22,10 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.concurrent.ExecutorService;
@@ -38,19 +34,15 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class MailboxServer implements IMailboxServer, Runnable {
 
-    private String componentId;
-    private ServerSocket dmtpServerSocket;
-    private ServerSocket dmapServerSocket;
-    private Shell shell;
-
     private final ExecutorService dmapConnectionPool = Executors.newCachedThreadPool();
     private final ExecutorService dmtpConnectionPool = Executors.newFixedThreadPool(10);
-
-    private Boolean shutdown = false;
-
-    private Config config;
-
     private final IMailboxDataRepository dataRepository;
+    private final String componentId;
+    private final Shell shell;
+    private final Config config;
+    private ServerSocket dmtpServerSocket;
+    private ServerSocket dmapServerSocket;
+    private Boolean shutdown = false;
     private ITCPWorkerFactory dmapFactory;
     private ITCPWorkerFactory dmtpFactory;
     private IWorkerManager workerManager;
@@ -71,6 +63,11 @@ public class MailboxServer implements IMailboxServer, Runnable {
         shell = new Shell(in, out);
         shell.register(this);
         shell.setPrompt(componentId + "> ");
+    }
+
+    public static void main(String[] args) throws Exception {
+        IMailboxServer server = ComponentFactory.createMailboxServer(args[0], System.in, System.out);
+        server.run();
     }
 
     @Override
@@ -174,7 +171,6 @@ public class MailboxServer implements IMailboxServer, Runnable {
         }
     }
 
-
     @Command
     public void dmtpStatus() {
         ThreadPoolExecutor executor = (ThreadPoolExecutor) dmtpConnectionPool;
@@ -191,7 +187,6 @@ public class MailboxServer implements IMailboxServer, Runnable {
     public void listUsers() {
         System.out.println(String.join("\n", new Config(config.getString("users.config")).listKeys()));
     }
-
 
     private Thread getRequestLoopThread(ProtocolType type) {
         return new Thread(() -> {
@@ -214,11 +209,5 @@ public class MailboxServer implements IMailboxServer, Runnable {
                 }
             }
         });
-    }
-
-
-    public static void main(String[] args) throws Exception {
-        IMailboxServer server = ComponentFactory.createMailboxServer(args[0], System.in, System.out);
-        server.run();
     }
 }

@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Simulates reading lines from an {@link InputStream}.
- *
+ * <p>
  * Internally, the lines read from the underlying {@link InputStream} are buffered and can be retrieved on demand for
  * verification purposes.
  */
