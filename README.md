@@ -3,6 +3,8 @@
 > [!TIP]
 > This project doesn't have a graphical user interface. Log into your mailbox through TCP tools like Netcat or PuTTY.
 
+_Components:_
+
 - Mailbox server:
 
   - stores and provides message access.
