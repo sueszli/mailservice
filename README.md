@@ -1,16 +1,22 @@
-**MailService: Enhanced Electronic Mail System**
+**MailService: a simplified mailing system**
 
-- Robust and feature-rich electronic mail service.
-- Core components: DMTP, DMAP, transfer servers, mailbox servers, and monitoring server.
-- Users access servers using TCP tools like Netcat or PuTTY.
+To check it out, log into the servers using TCP tools like Netcat or PuTTY.
 
-**System Architecture:**
+<br>
 
-- Transfer server forwards messages to appropriate mailbox servers.
-- Mailbox server stores and provides message access.
-- Monitoring server receives usage stats from transfer servers via UDP.
+_features_
 
-**Nice features:**
+- Mailbox server:
+
+  - stores and provides message access.
+
+- Monitoring server:
+
+  - receives usage stats from transfer servers via UDP.
+
+- Transfer server:
+
+  - forwards messages to appropriate mailbox servers.
 
 - Decentralized Naming Service:
   
