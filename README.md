@@ -1,7 +1,7 @@
 # MailService: a simplified mailing system
 
 > [!TIP]
-> To check it out, log into the servers using TCP tools like Netcat or PuTTY.
+> This project doesn't have a graphical user interface. Log into your mailbox through TCP tools like Netcat or PuTTY.
 
 - Mailbox server:
 
