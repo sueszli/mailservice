@@ -29,12 +29,10 @@ _Components:_
 - Opportunistic Encryption:
 
   - Secures DMAP channels for communication privacy and integrity.
-  - Ensures seamless and protected messaging experience.
 
 - Message Integrity Verification:
   
   - Mechanisms for verifying message integrity.
-  - Enhances system trustworthiness and reliability.
 
 <br>
 
