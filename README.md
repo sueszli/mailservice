@@ -3,8 +3,6 @@
 > [!TIP]
 > To check it out, log into the servers using TCP tools like Netcat or PuTTY.
 
-## Architecture
-
 - Mailbox server:
 
   - stores and provides message access.
