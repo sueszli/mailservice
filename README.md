@@ -1,10 +1,9 @@
-**MailService: a simplified mailing system**
+# MailService: a simplified mailing system
 
-To check it out, log into the servers using TCP tools like Netcat or PuTTY.
+> [!TIP]
+> To check it out, log into the servers using TCP tools like Netcat or PuTTY.
 
-<br>
-
-_features_
+## Architecture
 
 - Mailbox server:
 
