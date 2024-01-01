@@ -3,6 +3,8 @@
 > [!TIP]
 > This project doesn't have a graphical user interface. Log into your mailbox through TCP tools like Netcat or PuTTY.
 
+<br>
+
 _Components:_
 
 - Mailbox server:
