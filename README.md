@@ -1,4 +1,4 @@
-# MailService: a simplified mailing system
+# mailservice: a simplified mailing system
 
 > [!TIP]
 > This project doesn't have a graphical user interface. Log into your mailbox through TCP tools like Netcat or PuTTY.
